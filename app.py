@@ -3,15 +3,17 @@ from flask import (Flask, render_template, jsonify,
                    flash, make_response, abort)
 from pymongo import DESCENDING
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 from flask_cors import CORS
 from models import Ticket
+from os import getenv
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
     tickets = None
-    with MongoClient(uri=getenv('URI'), server_api=ServerApi('1')) as db_client:
+    with MongoClient( getenv('URI')) as db_client:
         db = db_client[getenv('MAIN_DB')]
         tickets = db.tickets.find(sort=[('ticket_index', DESCENDING)])
 
@@ -20,7 +22,7 @@ def index():
 @app.route("/ticket/<ticket_index>")
 def ticket(ticket_index):
     ticket = None
-    with MongoClient(uri=getenv('URI'), server_api=ServerApi('1')) as db_client:
+    with MongoClient(getenv('URI')) as db_client:
         db = db_client[getenv('MAIN_DB')]
         ticket = db.posts.find_one({'ticket_index': ticket_index})
     
@@ -31,7 +33,7 @@ def admin_login():
     if request.method == 'POST':
         user_name = request.form.get('user_name')
         password = request.form.get('password')
-        with MongoClient(uri=getenv('URI'), server_api=ServerApi('1')) as db_client:
+        with MongoClient( getenv('URI')) as db_client:
             db = db_client[getenv('MAIN_DB')]
             user = db.admin.find_one({'user_name': user_name})
             if password == user.get('password'):
@@ -42,7 +44,7 @@ def admin_login():
 
 @app.route("/admin", methods=['GET', 'POST'], strict_slashes=False)
 def admin():
-    with MongoClient(uri=getenv('URI'), server_api=ServerApi('1')) as db_client:
+    with MongoClient( getenv('URI')) as db_client:
         if request.method == 'GET':
             if not session.get('user_name'):
                 return redirect(url_for('admin_login'))
