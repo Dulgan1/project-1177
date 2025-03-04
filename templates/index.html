@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OddsOracle - AI-Powered Betting Predictions</title>
+    <style>
+        :root {
+            --navy: #2A2E5D;
+            --gold: #FFD700;
+            --electric-blue: #00B4FF;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            background: var(--navy);
+            color: white;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(0,0,0,0.8);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gold);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: linear-gradient(to right, var(--navy), #000);
+        }
+
+        .cta-button {
+            background: var(--gold);
+            color: var(--navy);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        /* Predictions Grid */
+        .predictions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .prediction-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid var(--gold);
+        }
+
+        .confidence-bar {
+            height: 5px;
+            background: var(--navy);
+            border-radius: 3px;
+            margin: 10px 0;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: var(--gold);
+            width: 85%; /* Dynamic value */
+            border-radius: 3px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .predictions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon"></div>
+            <h1>OddsOracle</h1>
+        </div>
+        <nav>
+            <a href="#predictions">Predictions</a>
+            <a href="#live-odds">Live Odds</a>
+            <a href="#about">About</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <img src="{{ url_for('static', filename='eye.png')}}"><br>
+        <button class="cta-button"><h1><img src="{{ url_for('static', filename='odd.png')}}"> </button>
+    </section>
+    <!-- Predictions Grid -->
+    <section class="predictions-grid" id="predictions">
+        <!-- Sample Prediction Card -->
+        <div class="prediction-card">
+            <h3>🏆 TICKET #1</h3>
+            <div class="confidence-bar">
+                <div class="confidence-fill"></div>
+            </div>
+            <p>Number of Games</p>
+            <p>💎 total Odds:(+120)</p><br>
+            <button class="cta-button">open ticket</button>
+        </div>
+
+        <!-- Add more prediction cards dynamically -->
+    </section>
+    <script>
+        // Sample dynamic content (replace with API calls)
+        const predictions = [
+            {
+                match: "🏆 TICKET #2",
+                confidence: 75,
+                prediction: "Number of Games",
+                odds: "+110"
+            },
+            {
+                match: "🏆 TICKET #3",
+                confidence: 68,
+                prediction: "Number of Games",
+                odds: "-130"
+            }
+        ];
+
+        function renderPredictions() {
+            const grid = document.querySelector('.predictions-grid');
+            
+            predictions.forEach(pred => {
+                const card = document.createElement('div');
+                card.className = 'prediction-card';
+                card.innerHTML = `
+                    <h3>${pred.match}</h3>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" style="width: ${pred.confidence}%"></div>
+                    </div>
+                    <p>${pred.prediction} (${pred.confidence}% confidence)</p>
+                    <p>💎total Odds: ${pred.odds}</p><br>
+                    <button class="cta-button">open ticket</button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', renderPredictions);
+    </script>
+</body>
+</html>
