@@ -146,18 +146,18 @@
             <input type="text" id="_prediction" name="prediction" required>
             <label for="_odd">Odd:</label>
             <input type="text" id="_odd" name="odd" required>
-            <label for="_league">Name:</label>
+            <label for="_league">League:</label>
             <input type="text" id="_league" name="league" required>
-            <label for="_game_time">Name:</label>
+            <label for="_game_time">Game Time:</label>
             <input type="text" id="_game_time" name="game_date" required>
-            <label for="_game_date">Name:</label>
+            <label for="_game_date">Game Date:</label>
             <input type="text" id="_game_date" name="game_date" required>
-            <button id="add_game_btn" ><strong>+</strong> Add Game<button>
+            <button id="add_game_btn" ><strong>+</strong> Add Game</button>
             <button id="submit_btn">Submit</button>
         </form>
     </div>
 </body>
-<script src="{{ url_for('static', filename='js/code.jquery.com_jquery-3.7.1.min')}}"></script>
+<script src="{{ url_for('static', filename='js/code.jquery.com_jquery-3.7.1.min.js')}}"></script>
 <script>
     $(document).ready(function () {
         let ticket_games = [];
