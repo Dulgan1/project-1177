@@ -9,6 +9,7 @@ from models import Ticket
 from os import getenv
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = getenv('OO_SECRET_KEY')
 
 @app.route("/")
 def index():
@@ -33,12 +34,16 @@ def admin_login():
     if request.method == 'POST':
         user_name = request.form.get('user_name')
         password = request.form.get('password')
-        with MongoClient( getenv('URI')) as db_client:
+        print(f'{user_name} : {password}')
+        with MongoClient(getenv('URI')) as db_client:
             db = db_client[getenv('MAIN_DB')]
-            user = db.admin.find_one({'user_name': user_name})
-            if password == user.get('password'):
+            user = db.admins.find_one({'user_name': user_name})
+            print(f"{user.get('user_name')}: {user.get('password')}")
+            if user and password == user.get('password'):
                 session['user_name'] = user_name
                 return redirect(url_for('admin'))
+            else:
+                return render_template('login.html', error="Admin not authenticated")
 
     return render_template('login.html')
 
@@ -48,6 +53,7 @@ def admin():
         if request.method == 'GET':
             if not session.get('user_name'):
                 return redirect(url_for('admin_login'))
+            return render_template('admin.html')
         if request.method == 'POST':
             if not session.get('user_name'):
                 return redirect(url_for('admin_login'))
@@ -57,5 +63,3 @@ def admin():
                                 starts=starts, ticket_index=ticket_index,
                                 status=status, )
             ticket_db.tickets.insert_one(new_ticket.to_dict())
-            
-            

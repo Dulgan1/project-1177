@@ -3,7 +3,6 @@ from datetime import datetime
 class Game():
     """Class for Game post
     attributes:
-        game_id
         home
         away
         status

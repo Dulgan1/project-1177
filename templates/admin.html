@@ -22,7 +22,7 @@
         input {
             display: block;
             width: 100%;
-            margin: 10px;
+            margin: 10px 10px 10px 10px;
             padding: 10px;
         }
 
@@ -119,19 +119,77 @@
     </style>
 </head>
 <body>
+    <header class="header">
+        <div class="logo"><a href="{{ url_for('index', _external=True) }}">
+            <div class="logo-icon"></div></a>
+            <h1>OddsOracle</h1>
+        </div>
+        <nav>
+            <a href="#predictions">Predictions</a>
+            <a href="#live-odds">Live Odds</a>
+            <a href="#about">About</a>
+        </nav>
+    </header>
     <div class="prediction-card">
-        <h2>Login Form</h2>
-        {% if error %}
-        <h3 style="color: crimson;">{{ error }}</h3>
-        {% endif %}
-        <form action="{{ url_for('admin_login')}}" method="POST">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="user_name" required>
-
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit">Submit</button>
+        <h2>Ticket Form</h2>
+        <p id="error" style="color: crimson;"></p>
+        <form>
+            <ul id="game_list">
+            </ul>
+            <label for="_home">Home:</label>
+            <input type="text" id="_name" name="home" required>
+            <label for="_away">Away:</label>
+            <input type="text" id="_away" name="away" required>
+            <label for="_status">Status:</label>
+            <input type="text" id="_status" name="status" required>
+            <label for="_prediction">Prediction:</label>
+            <input type="text" id="_prediction" name="prediction" required>
+            <label for="_odd">Odd:</label>
+            <input type="text" id="_odd" name="odd" required>
+            <label for="_league">Name:</label>
+            <input type="text" id="_league" name="league" required>
+            <label for="_game_time">Name:</label>
+            <input type="text" id="_game_time" name="game_date" required>
+            <label for="_game_date">Name:</label>
+            <input type="text" id="_game_date" name="game_date" required>
+            <button id="add_game_btn" ><strong>+</strong> Add Game<button>
+            <button id="submit_btn">Submit</button>
         </form>
     </div>
 </body>
+<script src="{{ url_for('static', filename='js/code.jquery.com_jquery-3.7.1.min')}}"></script>
+<script>
+    $(document).ready(function () {
+        let ticket_games = [];
+        $("#add_game_btn").on('click', function () {
+            const url = $('a').attr('href') + '/admin';
+            let game = {
+                home: $('#_home').val(),
+                away: $('#_away').val(),
+                status: $('#_status').val(),
+                prediction: $('#_prediction').val(),
+                odd: $('#_odd').val(),
+                league: $('#_league').val(),
+                game_time: $('#_game_time').val(),
+                game_date: $('#_game_date').val()
+            };
+            ticket_games.push(game);
+            $('#game_list').append(`
+            <li><p>${game.league}<i>  ${ game.game_date }, ${ game.game_time }</i><br/>
+                ${ game.home }  vs  ${ game.away }  ${ game.prediction }<br/>
+            ${ game.odd }<br/>
+            ${ game.status }</p></li>
+            `);
+        });
+        $("#submit_btn").on('click', function () {
+            if (ticket_games.length() === 0)
+            {
+                $("#error").text() = 'The Game List is Empty';
+                return;
+            } else {
+                $ajax({});
+            }
+        });
+    })
+</script>
 </html>
